@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-##########################################################################
-#This script is used for RNA velocity analysis in FAD fiber project
-#Author: Houyu Zhang
+
+# RNA velocity analysis has been done by my colleague: Houyu Zhang
+
 #Version: 1.1
 #Copyright (c) 2024 __CarlosLab@PKU__. All rights reserved.
-##########################################################################
 
 import anndata
 import numpy as np
