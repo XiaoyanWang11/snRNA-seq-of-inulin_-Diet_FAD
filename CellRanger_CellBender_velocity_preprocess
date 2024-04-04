@@ -1,0 +1,65 @@
+# ===============================================================================
+# CellRanger
+
+#!/bin/bash
+#SBATCH --mail-type=ALL
+#SBATCH --partition=q_fat_l
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=50
+#SBATCH --mem-per-cpu=20G
+#SBATCH --job-name=FAD_CR_count
+#SBATCH --output=%x.out 
+#SBATCH --error=%x.err
+
+for sampleID in MuLIFB_2 MuLIFB_3 # MuLIFB_1
+do
+Mus_ref_data=/../refdata-gex-mm10-2020-A
+cellranger count --id=${sampleID} --fastqs=/../${sampleID} --sample=${sampleID}-1,${sampleID}-2,${sampleID}-3 --transcriptome=${Mus_ref_data}
+done
+
+# ===============================================================================
+# CellBender
+
+#!/bin/bash
+#SBATCH --mail-type=ALL
+#SBATCH --partition=q_fat_l
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=50
+#SBATCH --mem-per-cpu=20G
+#SBATCH --job-name=FAD_CR_count
+#SBATCH --output=%x.out 
+#SBATCH --error=%x.err
+
+for sampleID in MuLIFB_1 MuLIFB_2 MuLIFB_3  
+do
+cellbender remove-background \
+--input /../${sampleID}/outs/raw_feature_bc_matrix.h5 \
+--output /../${sampleID}/outs/CellBender_feature_bc_matrix.h5 \
+--expected-cells 30000 --total-droplets-included 60000 --fpr 0.01 --epochs 150
+done
+
+
+# ===============================================================================
+# velocity
+
+#!/usr/bin/bash
+#SBATCH --mail-type=ALL
+#SBATCH --partition=q_fat_l
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=50
+#SBATCH --mem-per-cpu=20G
+#SBATCH --job-name=loom
+#SBATCH --output=loom.out 
+#SBATCH --error=loom.err
+
+for sampeid in Mu93MB_1 Mu93MB_2 Mu93MB_3 MuLIMB_1 MuLIMB_2 MuLIMB_3  # interbrain
+
+do
+velocyto run10x --mask /../mm10_repeat_rmsk.gtf /../${sampeid} /../refdata-gex-mm10-2020-A/genes/genes.gtf
+done
