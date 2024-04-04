@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+#Author: Xiaoyan Wang
+#Copyright (c) 2024 __CarlosLab@CCMU/CIBR__. All rights reserved.
 
 library(dplyr)
 library(Seurat)
