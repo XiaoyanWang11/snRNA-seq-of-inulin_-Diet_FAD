@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+#Author: Xiaoyan Wang
+#Copyright (c) 2024 __CarlosLab@PKU__. All rights reserved.
+
 ### cell type markers for cerebellum
 CB_markers <- c("Gabra6",   # Granule
              "Lypd6", "Prkcd",   # molecular layer interneurons (MLIs)
