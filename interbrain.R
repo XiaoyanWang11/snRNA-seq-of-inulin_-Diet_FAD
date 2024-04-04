@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+#Author: Xiaoyan Wang
+#Copyright (c) 2024 __CarlosLab@CCMU__. All rights reserved.
+
 IB.BS_colors <- c("Neuron" = "palevioletred2", "Astrocyte" = "olivedrab2", "Microglia" = "mediumpurple1",
             "Oligo" = "skyblue", "OPC" = "chocolate1", "Pericyte" = "royalblue", "Unknown" = "turquoise")
 
