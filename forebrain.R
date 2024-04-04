@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #Author: Xiaoyan Wang
-#Copyright (c) 2024 __CarlosLab@CCMU__. All rights reserved.
+#Copyright (c) 2024 __CarlosLab@CCMU/CIBR__. All rights reserved.
 
 FB_colors <- c("Neuron" = "palevioletred2", "Astrocyte" = "olivedrab2", "Microglia" = "mediumpurple1",
             "Oligo" = "skyblue", "OPC" = "chocolate1")
