@@ -136,11 +136,32 @@ up_down <- rbind(Neuron_UP_GO, Astrocyte_UP_GO, Astrocyte_DOWN_GO,
                  Microglia_UP_GO, Microglia_DOWN_GO, Oligo_UP_GO, 
                  Oligo_DOWN_GO, OPC_UP_GO, OPC_DOWN_GO)  
 up_down <- up_down %>% filter(up_down$p.adjust < 0.05) 
+# order the celltype, change and Description
+up_down$celltype <- factor(x = up_down$celltype, 
+                                     levels = c("Neuron", "Astrocyte", "Microglia", "Oligo", "OPC"))
+up_down$change <- factor(x = up_down$change, 
+                                     levels = c("up", "down"))
+up_down$Description <- factor(up_down$Description, levels = up_down$Description[order(up_down$change)])
+# visualization
 ggplot(up_down, aes(Description, -log10(p.adjust), fill = change)) +
-     geom_bar(position = position_dodge(), stat = "identity", width = 0.6) +  
-      scale_fill_manual(
-        values = c("up" = "#a32a31", "down" = "#3665a6"),
-        labels = c("Up-regulated pathways in Inulin_AD group", "Down-regulated pathways in Inulin_AD group")) +
-      labs(title = "GO pathways", y = "-log10(p.adjust)")
+  facet_grid(~celltype, scales = "free", space = "free_x") +        # 显示每个celltype的Description，调整间距
+  geom_bar(position = position_dodge(), stat = "identity", width = 0.6) +  
+  scale_fill_manual(
+    values = c("up" = "#a32a31", "down" = "#3665a6"),
+    labels = c("Up-regulated pathways in Inulin_AD group", "Down-regulated pathways in Inulin_AD group")) +
+  labs(title = "GO pathways", y = "-log10(p.adjust)") +
+  theme(panel.grid = element_blank(),
+        panel.background = element_rect(fill='transparent'),  # 画板背景透明
+        plot.title = element_text(size = 15),  # 画板标题
+        legend.title = element_blank(),   # 图例无标题
+        legend.position = "top",          # 图例位置
+        legend.justification = "left",    # 图例位置细调
+        #  legend.key.size = unit(2, "cm"),
+        axis.line = element_line(),       # 添加X,Y轴
+        text = element_text(size = 15),
+        legend.text = element_text(size = 12), # 增加图例字体大小
+        axis.title.x = element_blank(),    # X轴无标题
+        axis.text.x = element_text(size = 8, angle = 90, hjust=1,vjust=0.2), # X轴文本对齐
+        axis.text.y = element_text(size = 10, face = "bold")
+  )
 ggsave(paste0(opt$opd, gg_title, "_DEGs.GO-BP_pathway_", Sys.Date(), ".png"), width = 14, height = 8)
-
