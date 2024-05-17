@@ -4,11 +4,13 @@
 
 # Generate seurat object, filtering doublets, integrate and clustering in FAD fiber project
 
-library(Seurat)
-library(DoubletFinder)
-library(dplyr)
-library(patchwork)
-library(ggplot2)
+suppressPackageStartupMessages({
+  library(Seurat)
+  library(DoubletFinder)
+  library(dplyr)
+  library(patchwork)
+  library(ggplot2)
+})
 
 opt <- list(input = "/../outs/CellBender_feature_bc_matrix_filtered.h5",
             opd = "/diretory_to_output/")
