@@ -14,22 +14,20 @@ suppressPackageStartupMessages({
 
 opt <- list(input = "/../outs/CellBender_feature_bc_matrix_filtered.h5",
             opd = "/diretory_to_output/")
-## forebrain, the same procedure for other 3 regions
-FB93_rep1 <- Read10X_h5("/../outs/CellBender_feature_bc_matrix_filtered.h5")
-FB93_rep1 <- Read10X_h5("/../outs/CellBender_feature_bc_matrix_filtered.h5")
-FB93_rep1 <- Read10X_h5("/../outs/CellBender_feature_bc_matrix_filtered.h5")
-FBLI_rep1 <- Read10X_h5("/../outs/CellBender_feature_bc_matrix_filtered.h5")
-FBLI_rep1 <- Read10X_h5("/../outs/CellBender_feature_bc_matrix_filtered.h5")
-FBLI_rep1 <- Read10X_h5("/../outs/CellBender_feature_bc_matrix_filtered.h5")
-FB93_1 <- CreateSeuratObject(counts = FB93_rep1, project = "93FB_1", min.cells = 10, min.features = 500)
-FB93_2 <- CreateSeuratObject(counts = FB93_rep2, project = "93FB_1", min.cells = 10, min.features = 500)
-FB93_3 <- CreateSeuratObject(counts = FB93_rep3, project = "93FB_1", min.cells = 10, min.features = 500)
-FBLI_1 <- CreateSeuratObject(counts = FBLI_rep1, project = "LIFB_1", min.cells = 10, min.features = 500)
-FBLI_2 <- CreateSeuratObject(counts = FBLI_rep2, project = "LIFB_2", min.cells = 10, min.features = 500)
-FBLI_3 <- CreateSeuratObject(counts = FBLI_rep3, project = "LIFB_3", min.cells = 10, min.features = 500)
-FB.list <- list(FB93_1 = FB93_1, FB93_2 = FB93_2, FB93_3 = FB93_3,
-                FBLI_1 = FBLI_1, FBLI_2 = FBLI_2, FBLI_3 = FBLI_3)
 
+## forebrain, the same procedure for other 3 regions
+samples <- list.dirs(opt$input, recursive = F, full.names = F)
+
+## read h5 file and create Seurat object
+FAD_FB.list <- lapply(samples, function(i){
+  print(i)
+  counts <- Read10X_h5(paste0(opt$input, i, "/outs/CellBender_feature_bc_matrix_filtered.h5"))
+  sce <- CreateSeuratObject(counts, project=i, min.cells=10, min.features = 500)
+  return(sce)
+})
+names(FAD_FB.list) =  samples
+
+## Filtering low-quality nuclei and doublets
 RunSeurat <- function(ObjList, Filter_nFeature_RNA = c(500, 6000),
                       Filter_nCount_RNA = c(1000, 50000), MitoPercent = 0.2,
                       nPCs = 15, DoubletPercent = 0.08) {
